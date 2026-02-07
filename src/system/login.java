@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import config.config;
 import system.dashboard;
+import user.usersdashboard;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ public class login extends javax.swing.JFrame {
         
     public login() {
         initComponents();
+        config.initDB();
         con = config.connectDB();
     }
     
@@ -147,6 +149,10 @@ public class login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
+        if (con == null) {
+            JOptionPane.showMessageDialog(this, "Database connection failed. Please check your setup.");
+            return;
+        }
         String sql = "SELECT * FROM tbl_register WHERE email=? AND password=?";
         try (PreparedStatement pst = con.prepareStatement(sql)) {
             pst.setString(1, email.getText());
@@ -165,11 +171,11 @@ public class login extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Login Successful!");
 
                     // Open correct dashboard based on user type
+                    int userId = rs.getInt("r_id");
                     if (userType != null && userType.equalsIgnoreCase("admin")) {
-                        int adminId = rs.getInt("r_id");
-                        new dashboard(adminId).setVisible(true);   // Admin dashboard (with ID)
+                        new dashboard(userId).setVisible(true);   // Admin dashboard
                     } else if (userType != null && userType.equalsIgnoreCase("user")) {
-                        new dashboard(rs.getInt("r_id")).setVisible(true);
+                        new usersdashboard(userId).setVisible(true);   // User dashboard
                     } else {
                         JOptionPane.showMessageDialog(this, "Invalid user type.");
                         return;

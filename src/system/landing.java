@@ -12,6 +12,7 @@ public class landing extends javax.swing.JFrame {
     
     public landing() {
          initComponents();
+    jLabel3.setText("Welcome to Pasok - Your Fresh Produce Destination");
 
     JButton[] buttons = { aboutus, fruits, contacts };
 
@@ -134,7 +135,7 @@ public class landing extends javax.swing.JFrame {
         jLabel3.setBounds(590, 160, 440, 40);
         jPanel3.add(jLabel3);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/strawberry.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/front.png"))); // NOI18N
         jLabel1.setBounds(0, 0, 540, 410);
         jPanel3.add(jLabel1);
 

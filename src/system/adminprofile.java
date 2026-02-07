@@ -23,55 +23,63 @@ public class adminprofile extends javax.swing.JFrame {
     public int adminId;
     
     public adminprofile(int r_id) {
-    initComponents();
-    this.adminId = r_id;
-    displayData();
-    
+        initComponents();
+        this.adminId = r_id;
+        setTitle("Admin Profile");
+        setupMenuButtons();
+        displayData();
     }
     public void displayData() {
-    try (Connection conn = config.connectDB();
-     PreparedStatement pst = conn.prepareStatement(
-         "SELECT * FROM tbl_register WHERE r_id = ?")) {
+        if (adminId <= 0) return;
+        try (Connection conn = config.connectDB();
+             PreparedStatement pst = conn.prepareStatement(
+                 "SELECT * FROM tbl_register WHERE r_id = ?")) {
 
-    pst.setInt(1, adminId); // adminId must be defined somewhere
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Database connection failed.");
+                return;
+            }
 
-    ResultSet rs = pst.executeQuery();
+            pst.setInt(1, adminId);
+            ResultSet rs = pst.executeQuery();
 
-    if (rs.next()) {
-        // Map database columns to your GUI fields
-        // Make sure column names exist in your DB
-         email.setText(rs.getString("email"));          
-         username.setText(rs.getString("username"));
-         firstname.setText(rs.getString("f_name"));
-         lastname.setText(rs.getString("l_name"));
-         usertype.setText(rs.getString("user_type"));
+            if (rs.next()) {
+                email.setText(rs.getString("email") != null ? rs.getString("email") : "");
+                username.setText(rs.getString("username") != null ? rs.getString("username") : "");
+                firstname.setText(rs.getString("f_name") != null ? rs.getString("f_name") : "");
+                lastname.setText(rs.getString("l_name") != null ? rs.getString("l_name") : "");
+                usertype.setText(rs.getString("user_type") != null ? rs.getString("user_type") : "");
+            } else {
+                JOptionPane.showMessageDialog(this, "No user found with ID: " + adminId);
+            }
 
-    } else {
-        JOptionPane.showMessageDialog(this, "No user found with ID: " + adminId);
-    }
-
-    rs.close();
-    pst.close();
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error fetching profile: " + e.getMessage());
-        e.printStackTrace();
-    }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error fetching profile: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     public adminprofile() {
         initComponents();
-        setTitle("adminProfile");
-        
-        JButton[] buttons = { dashboard, customer, products, orders, reports, user, logout };
-
+        setTitle("Admin Profile");
+        this.adminId = 0;
+        setupMenuButtons();
+    }
+    
+    private void setupMenuButtons() {
+        JButton[] buttons = { dashboard, customer, products, orders, reports, user, profile, logout };
         for (JButton btn : buttons) {
             btn.setOpaque(true);
             btn.setContentAreaFilled(true);
             btn.setBorderPainted(false);
-            btn.setBackground(defaultColor);
+            if (btn == logout) {
+                btn.setBackground(new Color(255, 51, 51));
+            } else {
+                btn.setBackground(defaultColor);
+            }
         }
     }
+    
     private void resetMenuColors() {
     JButton[] buttons = {
         dashboard, // Dashboard

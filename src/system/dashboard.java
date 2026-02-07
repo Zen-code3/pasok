@@ -204,7 +204,7 @@ public class dashboard extends javax.swing.JFrame {
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 500));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/dashbg.png"))); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/front.png"))); // NOI18N
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 0, 630, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

@@ -11,6 +11,7 @@ public class register extends javax.swing.JFrame {
     
     public register() {
         initComponents();
+        config.initDB();
         con = config.connectDB();
     }
     
